@@ -1,4 +1,5 @@
 import 'package:e_commerce_app/constants.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -11,7 +12,12 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text("Home Page", style: Constants.regularHeading),
+        child: TextButton(
+          child: Text("Logout"),
+          onPressed: () {
+            FirebaseAuth.instance.signOut();
+          },
+        ),
       ),
     );
   }

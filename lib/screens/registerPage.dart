@@ -1,5 +1,6 @@
 import 'package:e_commerce_app/widgets/custom_button.dart';
 import 'package:e_commerce_app/widgets/custom_input.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../constants.dart';
@@ -11,7 +12,7 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   // Build an alert dialog to display some errors
-  Future<void> _alertDialogBuilder() async {
+  Future<void> _alertDialogBuilder(String? error) async {
     return showDialog(
       context: context,
       barrierDismissible: false,
@@ -19,19 +20,62 @@ class _RegisterPageState extends State<RegisterPage> {
         return AlertDialog(
           title: Text("Error"),
           content: Container(
-            child: Text("Just some random text for now"),
+            child: Text(error != null ? error : "Account Created Successfully!!"),
           ),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text("Close Dialogue"),
+              child: Text("Ok"),
             )
           ],
         );
       },
     );
+  }
+
+  //create new user account
+  Future<String?> _createAccount() async {
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: _registerEmail, password: _registerPassword);
+      return null;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        return 'The password provided is too weak.';
+      } else if (e.code == 'email-already-in-use') {
+        return 'The account already exists for that email.';
+      }
+      return e.message;
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
+  void _submitForm() async {
+    //set form to loading state
+    setState(() {
+      _registerFormLoading = true;
+    });
+
+    // Run the _createAccount method
+    String? _createAccountFeedback = await _createAccount();
+
+    //if string is not null, we get error while creating account
+    // ignore: unrelated_type_equality_checks
+    if (_createAccountFeedback != Null) {
+      _alertDialogBuilder(_createAccountFeedback);
+
+      //set account to regular state (not loading)
+      setState(() {
+        _registerFormLoading = false;
+      });
+    } else {
+
+      //String was null, user is logged in.
+      Navigator.pop(context);
+    }
   }
 
   // Default Form loading state
@@ -96,14 +140,14 @@ class _RegisterPageState extends State<RegisterPage> {
                     textInputAction: TextInputAction.done,
                     focusNode: _passwordFocusNode,
                     isPasswordField: true,
+                    onSubmitted: (value) {
+                      _submitForm();
+                    },
                   ),
                   CustomButton(
                     text: "Create New Account",
                     onPressed: () {
-                      //open dialog
-                      setState(() {
-                        _registerFormLoading = true;
-                      });
+                      _submitForm();
                     },
                     isLoading: _registerFormLoading,
                     outlineBtn: false,
