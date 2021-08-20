@@ -50,7 +50,7 @@ flutter:
   uses-material-design: true
 
   assets:
-    - E:\FlutterProjects\e_commerce_app\assets\images\
+    - assets\images\
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg
