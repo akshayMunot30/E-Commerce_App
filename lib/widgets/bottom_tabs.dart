@@ -14,7 +14,7 @@ class BottomTabButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Image(
-        image: AssetImage('assets\images\logout.png'),
+        image: AssetImage('assets/images/tab_home.png'),
       ),
     );
   }
