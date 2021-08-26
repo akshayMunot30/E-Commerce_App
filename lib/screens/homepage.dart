@@ -1,6 +1,4 @@
-import 'package:e_commerce_app/constants.dart';
 import 'package:e_commerce_app/widgets/bottom_tabs.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,7 +13,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    _tabsPageController = PageController(initialPage: 0);
+    _tabsPageController = PageController();
     super.initState();
   }
 
@@ -24,6 +22,12 @@ class _HomePageState extends State<HomePage> {
     _tabsPageController.dispose();
     super.dispose();
   }
+
+  // void _onItemTapped(int index) {
+  //   setState(() {
+  //     _selectedTab = index;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +73,43 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
+
+      // bottomNavigationBar: BottomNavigationBar(
+      //   items: [
+      //     BottomNavigationBarItem(
+      //       icon: Icon(
+      //         Icons.home,
+      //         color: Colors.black,
+      //       ),
+      //       label: "Home",
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(
+      //         Icons.search,
+      //         color: Colors.black,
+      //       ),
+      //       label: "Search",
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(
+      //         Icons.bookmark,
+      //         color: Colors.black,
+      //       ),
+      //       label: "Saved",
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(
+      //         Icons.logout,
+      //         color: Colors.black,
+      //       ),
+      //       label: "Logout",
+      //     ),
+      //   ],
+      //   currentIndex: _selectedTab,
+      //   selectedItemColor: Colors.black,
+      //   showSelectedLabels: true,
+      //   onTap: _onItemTapped,
+      // ),
     );
   }
 }
